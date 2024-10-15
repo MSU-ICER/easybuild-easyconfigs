@@ -9,10 +9,14 @@ toolchain = {'name': 'foss', 'version': '2022b'}
 
 source_urls = ['https://cloud.r-project.org/src/base/R-%(version_major)s']
 sources = [SOURCE_TAR_GZ]
-patches = ['R-4.x_fix-CVE-2024-27322.patch']
+patches = [
+    'R-4.x_fix-CVE-2024-27322.patch',  
+    'R-4.2.2-foss-2022b-no_vignettes.patch',
+]
 checksums = [
     {'R-4.2.2.tar.gz': '0ff62b42ec51afa5713caee7c4fde7a0c45940ba39bef8c5c9487fef0c953df5'},
     {'R-4.x_fix-CVE-2024-27322.patch': 'd8560e15c3c5716f99e852541901014d406f2a73136b0b74f11ba529f7a7b00d'},
+    {'R-4.2.2-foss-2022b-no_vignettes.patch': '66df76bd7adaa5af54a50786fd2776b0f10fdd24be91496a2d31ffb07199b579'},
 ]
 
 builddependencies = [
@@ -92,9 +96,6 @@ else:
 # !! order of packages is important !!
 # packages updated on 17th March 2023
 exts_list = [
-    # include packages that are part of the base installation of R,
-    # both to make sure they are available (via sanity check),
-    # and to be able to pass the check for required dependencies when installing extensions in parallel
     'base',
     'compiler',
     'datasets',
@@ -2387,7 +2388,6 @@ exts_list = [
         'checksums': ['be50f9fdef0f4bf9676b9c3c2906d0431afc678af55cf48b1119f9fc0adac44f'],
     }),
     ('liquidSVM', '1.2.4', {
-        # Don't add optimization flags by liquidSVM which may not be known e.g. on PPC
         'patches': ['liquidSVM-1.2.4-fix_ppc_and_aarch64_build.patch'],
         'preinstallopts': 'LIQUIDSVM_TARGET="empty"',
         'checksums': [
@@ -2867,8 +2867,8 @@ exts_list = [
         'checksums': ['fab573abdc0dd44e8c8bc7242a1428df20b3ec64c4c194e5f1f907393f902d01'],
     }),
     ('dbarts', '0.9-23', {
+        'preinstallopts': '',
         'checksums': ['e1ac65fd89c321895d4f0e77d9cd8dcda5f1103485008afd4e19e6c9137557a3'],
-        'preinstallopts': local_dbarts_preinstallopts,
     }),
     ('proftools', '0.99-3', {
         'checksums': ['e034eb1531af54013143da3e15229e1d4c2260f8eb79c93846014db3bdefb724'],
@@ -2904,12 +2904,8 @@ exts_list = [
         'checksums': ['d4d9ef7b2788efeb8209aa8dd610af4cd86286392fbdf9ea70bcfeafda95d4c5'],
     }),
     ('gWidgets2tcltk', '1.0-8', {
-        # need to run installation via xvfb-run to avoid problems on headless systems:
-        # no DISPLAY variable so Tk is not available
-        # [tcl] invalid command name "font"
-        'preinstallopts': "xvfb-run ",
-        # skip 'import' check with library(gWidgets2tcltk), since it also fails on headless systems...
         'modulename': False,
+        'preinstallopts': "xvfb-run ",
         'checksums': ['10399cc636eeeb5484c3379970c37c56df10d979bf866a35b66d0c75b7222c0a'],
     }),
     ('mgsub', '1.7.3', {
