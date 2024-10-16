@@ -1,0 +1,88 @@
+name = 'R'
+version = '3.6.3'
+
+homepage = 'https://www.r-project.org/'
+description = """R is a free software environment for statistical computing
+ and graphics."""
+
+toolchain = {'name': 'foss', 'version': '2022b'}
+
+source_urls = ['https://cloud.r-project.org/src/base/R-%(version_major)s']
+sources = [SOURCE_TAR_GZ]
+checksums = ['89302990d8e8add536e12125ec591d6951022cf8475861b3690bc8bf1cefaa8f']
+
+builddependencies = [
+    ('pkg-config', '0.29.2'),
+]
+dependencies = [
+    ('X11', '20221110'),
+    ('Mesa', '22.2.4'),
+    ('libGLU', '9.0.2'),
+    ('cairo', '1.17.4'),
+    ('libreadline', '8.2'),
+    ('ncurses', '6.3'),
+    ('bzip2', '1.0.8'),
+    ('XZ', '5.2.7'),
+    ('zlib', '1.2.12'),
+    ('SQLite', '3.39.4'),
+    ('PCRE', '8.45'),
+    ('libpng', '1.6.38'),
+    ('libjpeg-turbo', '2.1.4'),
+    ('LibTIFF', '4.4.0'),
+    ('Java', '21.0.2', '', SYSTEM),
+    ('Tk', '8.6.12'),
+    ('cURL', '7.86.0'),
+    ('libxml2', '2.10.3'),
+    ('GMP', '6.2.1'),
+    ('NLopt', '2.7.1'),
+    ('FFTW', '3.3.10'),
+    ('libsndfile', '1.2.0'),
+    ('ICU', '72.1'),
+    ('HDF5', '1.14.0'),
+    ('UDUNITS', '2.2.28'),
+    ('GSL', '2.7'),
+    ('ImageMagick', '7.1.0-53'),
+    # OS dependency should be preferred if the os version is more recent then
+    # this version, it's nice to have an up to date openssl for security
+    # reasons
+    # ('OpenSSL', '1.1.1e'),
+]
+
+osdependencies = [('openssl-devel', 'libssl-dev', 'libopenssl-devel')]
+
+configopts = "--with-pic --enable-threads --enable-R-shlib --with-recommended-packages=no"
+
+# specify that at least EasyBuild v3.5.0 is required,
+# since we rely on the updated easyblock for R to configure correctly w.r.t. BLAS/LAPACK
+easybuild_version = '3.5.0'
+
+exts_default_options = {
+    'source_tmpl': '%(name)s_%(version)s.tar.gz',
+    'source_urls': ['https://cran.r-project.org/src/contrib/Archive/%(name)s', 'https://cran.r-project.org/src/contrib/', 'https://cran.freestatistics.org/src/contrib'],
+}
+
+# !! order of packages is important !!
+# packages updated on 25 March 2020
+exts_list = [
+    # include packages that are part of the base installation of R,
+    # both to make sure they are available (via sanity check),
+    # and to be able to pass the check for required dependencies when installing extensions in parallel
+    'base',
+    'compiler',
+    'datasets',
+    'graphics',
+    'grDevices',
+    'grid',
+    'methods',
+    'parallel',
+    'splines',
+    'stats',
+    'stats4',
+    'tcltk',
+    'tools',
+    'utils',
+]
+
+moduleclass = 'lang'
+
+modloadmsg = 'R/3.6.3 is installed with a minimal set of packages. Please install packages you need locally'
