@@ -1,0 +1,34 @@
+# This file is an EasyBuild reciPY as per https://github.com/easybuilders/easybuild
+# Author: Pablo Escobar Lopez
+# Swiss Institute of Bioinformatics
+# Biozentrum - University of Basel
+
+easyblock = 'Binary'
+
+
+name = "ChimeraX"
+version = "1.9"
+versionsuffix = "-ubuntu22.04-amd64"
+
+homepage = 'https://www.rbvi.ucsf.edu/chimerax/'
+description = """ UCSF ChimeraX (or simply ChimeraX) is the next-generation molecular 
+visualization program from the Resource for Biocomputing, Visualization, 
+and Informatics (RBVI), following UCSF Chimera. """
+
+toolchain = SYSTEM
+
+# no public download URL. Go to https://www.rbvi.ucsf.edu/chimerax/download.html
+sources = ['ucsf-%(namelower)s_%(version)subuntu22.04_amd64.deb']
+checksums = ['5a55ee8975a5d2844fe4ff712118d3b3634a9ba750ab916fea82f77b4d3f37d9']
+
+# Debian package manager (dpkg) will be used for installation
+osdependencies = ['dpkg']
+
+install_cmd = "dpkg -x ucsf-chimerax*.deb %(installdir)s && mv %(installdir)s/usr/lib/ucsf-chimerax/* %(installdir)s && rm -r %(installdir)s/usr"
+
+sanity_check_paths = {
+    'files': ["bin/ChimeraX"],
+    'dirs': []
+}
+
+moduleclass = 'bio'
