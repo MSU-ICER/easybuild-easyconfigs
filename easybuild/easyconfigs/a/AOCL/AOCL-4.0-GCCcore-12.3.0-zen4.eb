@@ -1,0 +1,36 @@
+easyblock = "Binary"
+
+name = 'AOCL'
+version = '4.0'
+versionsuffix = "-zen4"
+
+homepage = 'https://www.amd.com/en/developer/aocl.html'
+description = "AMD Optimized Libraries"
+
+toolchain = {'name': 'GCCcore', 'version': '12.3.0'}
+
+sources = ['aocl-linux-aocc-%(version)s.tar.gz']
+
+dependencies = [("AOCC", "4.0.0")] # runtime dependency
+
+extract_sources = True
+
+staged_install = True
+# AOCL install script creates a version subdir that we don't want.
+# Copy desired directories into the staged/ dir created above.
+# Zen4 AVX512 libraries must be extracted & installed manually.
+install_cmds = [
+    "mkdir temp",
+    "./install.sh -i LP64 -t temp", # explicitly choose LP64 as default
+    "mv temp/%(version)s/* ../staged/",
+    "tar -xzf aocl-libmem-avx512-linux-aocc-4.0.tar.gz -C ../staged/",
+    "mv ../staged/amd-libmem/include/* ../staged/include/",
+    "mv ../staged/amd-libmem/lib/* ../staged/lib/",
+]
+
+sanity_check_paths = {
+    'files': [],
+    'dirs': ["lib", "include"]
+}
+
+moduleclass = 'lib'
