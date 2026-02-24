@@ -1,0 +1,34 @@
+# I am not affiliated in any way with Ollama.
+# Author: Julian Venegas
+# Email: venegas5@msu.edu
+
+easyblock = 'Tarball'
+
+name = 'Ollama'
+version = '0.6.7'
+homepage = 'https://ollama.com'
+description = """Get up and running with large language models. A command-line tool for running large language models locally."""
+toolchain = SYSTEM
+
+#source_urls = ['https://github.com/ollama/ollama/releases/download/v%(version)s/']
+#sources = ['ollama-linux-amd64.tgz']
+sources = [
+    {
+        'filename': 'ollama-linux-amd64-v%(version)s.tgz',
+        'source_urls': ['https://github.com/ollama/ollama/releases/download/v%(version)s/'],
+        'download_filename': 'ollama-linux-amd64.tgz'
+    }
+]
+
+preinstall_cmd = 'mkdir -p {installdir}/bin {installdir}/lib'
+
+sanity_check_paths = {
+    'files': ['bin/ollama'],
+    'dirs': ['lib/']
+}
+
+sanity_check_commands = [
+        'ollama --version | grep %(version)s',
+]
+
+moduleclass = 'tools'
