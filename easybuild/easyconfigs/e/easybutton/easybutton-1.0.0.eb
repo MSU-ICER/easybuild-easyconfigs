@@ -1,0 +1,51 @@
+easyblock = 'PackedBinary'
+
+name = 'easybutton'
+version = "1.0.0"
+
+homepage = 'https://docs.icer.msu.edu'
+
+description = ' Helpful tool developed by ICER for user level system health checking.'
+
+toolchain = SYSTEM
+
+sources = [{
+    'filename': 'easybutton-20260313.tar.gz',
+    'git_config': {
+        'url': 'git@gitlab.msu.edu:icer/helpdesk',
+        'repo_name': 'easybutton',
+        # 'commit': 'new_os',
+        'commit': 'd7bac89eb5f0dcdae97388399967c08fec8392e0',
+        'recursive': True
+    },
+}]
+
+#dependencies = [
+#    ('reportseff', '2.7.6'),
+#]
+
+#modextravars = {'PTOOLSROOT': '%(installdir)s'}
+#modaliases = {
+#    'longjob': 'source %(installdir)s/doc/longjob',
+#    'PrimaryGroup': 'source %(installdir)s/doc/PrimaryGroup',
+#    'conda-init': 'source %(installdir)s/doc/Conda_Initiation',
+#    'jobenvtool': 'source %(installdir)s/doc/jobenvtool',
+#    'mll': 'source %(installdir)s/doc/mll',
+#    'msp': 'module spider',
+#    'msh': 'module show',
+#    'checkjob': 'scontrol show job',
+#    'checknode': 'scontrol show node',
+#    'nodelist': 'sinfo -N -l | grep -v "*"',
+#    'showstart': 'squeue --format="%.18i %.9P %.8j %.8u %.2t %.19S %.6D %20Y %R", --sort=S -u $USER',
+#    'showconfig': 'scontrol show config',
+#    'prs': 'buyin_status -u $USER',
+#    'qlist': 'squeue -r -h -t PD -u $USER -o %i',
+#    'holdall': 'for j in $(qlist); do scontrol hold $j; done;'
+#}
+
+sanity_check_paths = {
+    'files': [],
+    'dirs': ['bin', 'hpcc/dev']
+}
+
+moduleclass = 'tools'
