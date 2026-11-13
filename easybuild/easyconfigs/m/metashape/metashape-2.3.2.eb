@@ -1,0 +1,40 @@
+# EasyConfig for Agisoft Metashape Professional Version: 2.3.2
+
+easyblock = 'Tarball'
+
+name = 'metashape'
+version = '2.3.2'
+
+homepage = 'https://agisoft.com'
+description = 'Agisoft Metashape is a stand-alone software product that performs photogrammetric processing.'
+
+toolchain = SYSTEM
+
+source_urls = ['/mnt/research/helpdesk/src/m/metashape/'] # local source directory
+sources = ['metashape-pro_2_3_2_amd64.tar.gz'] # Adjust archive name as needed
+checksums = ['b1f0e1bc72c06b3a567412f8220a1dbfdad03739d02e73ba46cea927b4332832']
+
+# Permission adjusted after unpack the tarball.
+postinstallcmds = [
+    "chmod g+x %(installdir)s/add_to_applications.sh \
+               %(installdir)s/crashreporter \
+               %(installdir)s/metashape \
+               %(installdir)s/metashape-server \
+               %(installdir)s/metashape.sh \
+               %(installdir)s/monitor \
+               %(installdir)s/monitor.sh \
+               %(installdir)s/viewer \
+               %(installdir)s/viewer.sh", 
+]
+
+modextrapaths = {
+    'PATH': '',
+}
+
+sanity_check_paths = {
+    'files': ['metashape', 'metashape.sh'],
+    'dirs': ['python', 'modules'],
+}
+
+moduleclass = 'vis'
+
